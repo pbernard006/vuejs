@@ -19,7 +19,11 @@ export default {
         todo.nbHeures = this.nbHeures;
         todo.responsable = this.responsable;
         todo.id = this.id;
-        this.todoList.push(todo);
+        if (this.todoList.find((i) => i.id === todo.id) !== undefined) {
+          this.todoList.splice(todo.id - 1, 1, todo);
+        } else {
+          this.todoList.push(todo);
+        }
 
         this.titre = '';
         this.nbHeures = '';
@@ -35,7 +39,14 @@ export default {
     edit(id) {
       console.log(id);
       const todo = this.todoList.find((i) => i.id === id);
-      console.log(todo);
+      this.titre = todo.titre;
+      this.nbHeures = todo.nbHeures;
+      this.responsable = todo.responsable;
+      this.id = todo.id;
+    },
+    deleteOne(id) {
+      const todo = this.todoList.find((i) => i.id === id);
+      this.todoList.splice(todo.id - 1, 1);
     },
   },
 };
@@ -59,6 +70,7 @@ export default {
             {{todo.titre}} {{todo.nbHeures}} {{todo.responsable}}
           </p>
           <button v-on:click="edit(todo.id)">Editer</button>
+          <button v-on:click="deleteOne(todo.id)">Supprimer</button>
         </div>
     </div>
 </template>
